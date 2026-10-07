@@ -1,13 +1,7 @@
 ---
-
 name: nestjs-mongodb-production-code-review
-description: Production-grade code review skill for Angular, NestJS, Node.js,
-TypeScript, MongoDB/Mongoose, Nx, Jest, REST APIs, and microservices.
-Reviews code changes across frontend, API, backend, database, security,
-performance, testing, multi-tenancy, asynchronous processing, and
-production reliability. Use when reviewing files, features, current
-Git changes, or pull requests.
-------------------------------
+description: Production-grade code review for Angular, NestJS, Node.js, TypeScript, MongoDB/Mongoose, Nx, Jest, REST APIs, and microservices. Reviews changes across frontend, API, backend, database, security, performance, testing, multi-tenancy, async processing, and production reliability, and reports color-coded findings by severity. Use whenever the user asks to review a file, a feature, current Git changes, or a pull request in this stack, even if they only say "check this" or "is this ready to merge".
+---
 
 # NestJS/MongoDB Production Code Review
 
@@ -15,32 +9,32 @@ Git changes, or pull requests.
 
 Act as a senior production code reviewer for applications built with:
 
-* Angular
-* TypeScript
-* Node.js
-* NestJS
-* MongoDB / Mongoose
-* Nx monorepos
-* REST APIs
-* WebSockets where applicable
-* Microservices
-* AWS/SQS or similar messaging systems
-* Jest and related testing frameworks
-* Sonar/SonarQube or equivalent static analysis
+- Angular
+- TypeScript
+- Node.js
+- NestJS
+- MongoDB / Mongoose
+- Nx monorepos
+- REST APIs
+- WebSockets where applicable
+- Microservices
+- AWS/SQS or similar messaging systems
+- Jest and related testing frameworks
+- Sonar/SonarQube or equivalent static analysis
 
 The goal is not merely to determine whether code works.
 
 Review whether the change is:
 
-* Correct
-* Maintainable
-* Secure
-* Performant
-* Testable
-* Scalable
-* Backward compatible
-* Consistent with the existing architecture
-* Safe for production
+- Correct
+- Maintainable
+- Secure
+- Performant
+- Testable
+- Scalable
+- Backward compatible
+- Consistent with the existing architecture
+- Safe for production
 
 Review the system as a production engineer rather than reviewing isolated lines of code.
 
@@ -1375,78 +1369,24 @@ Explain why the resulting value is correct.
 
 ---
 
-# 30. Finding Classification
+## 30. Finding Classification and Color Legend
 
-Every meaningful finding should receive one severity.
+Every meaningful finding receives exactly one severity. Each severity has a fixed color marker so the reader can scan the report by color. Use the emoji marker — it renders in terminals, Claude Code, GitHub, IDEs and chat alike, whereas real text color (HTML `style`, ANSI codes) is stripped or shown raw by most markdown renderers.
 
-## CRITICAL
+| Marker | Severity     | Color    | Potential                                                                                                                                                                               | Expected action                             |
+| ------ | ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| ⛔     | **CRITICAL** | Dark red | Data corruption; cross-tenant data leakage; critical security vulnerability; severe production failure; destructive behavior; major correctness issue                                   | Block the change                            |
+| 🔴     | **HIGH**     | Red      | Significant performance degradation; incorrect business behavior; missing authorization; serious API compatibility issue; reliability problem; data consistency issue; major regression | Fix before merge unless explicitly accepted |
+| 🟠     | **MEDIUM**   | Orange   | Maintainability issue; moderate performance concern; missing meaningful test coverage; error-handling weakness; moderate design issue                                                   | Fix before merge when practical             |
+| 🟡     | **LOW**      | Yellow   | Minor maintainability issue; small readability issue; minor consistency problem                                                                                                         | Optional improvement                        |
+| 🔵     | **INFO**     | Blue     | Useful observation or recommendation that is not a defect                                                                                                                               | None required                               |
+| 🟢     | **POSITIVE** | Green    | Something the change does well (§33) — not a severity, never counts toward the verdict                                                                                                  | None                                        |
 
-Potential:
+**Coloring rules:**
 
-- Data corruption
-- Cross-tenant data leakage
-- Critical security vulnerability
-- Severe production failure
-- Destructive behavior
-- Major correctness issue
-
-Expected action:
-
-> Block the change.
-
----
-
-## HIGH
-
-Potential:
-
-- Significant performance degradation
-- Incorrect business behavior
-- Missing authorization
-- Serious API compatibility issue
-- Reliability problem
-- Data consistency issue
-- Major regression
-
-Expected action:
-
-> Fix before merge unless explicitly accepted.
-
----
-
-## MEDIUM
-
-Potential:
-
-- Maintainability issue
-- Moderate performance concern
-- Missing meaningful test coverage
-- Error-handling weakness
-- Moderate design issue
-
-Expected action:
-
-> Fix before merge when practical.
-
----
-
-## LOW
-
-Potential:
-
-- Minor maintainability issue
-- Small readability issue
-- Minor consistency problem
-
-Expected action:
-
-> Optional improvement.
-
----
-
-## INFO
-
-Useful observation or recommendation that is not a defect.
+- Put the marker at the start of every finding heading, e.g. `### 🔴 [HIGH] Missing tenant filter in getReferrals`, and before every summary-table row and verdict line that names a severity.
+- Use only the marker for that finding's severity. Do not use these colored circles for anything else in the report (status, confidence, decoration), or the color stops meaning severity.
+- Never let a color replace the text label — always write `[HIGH]` etc. next to the marker, so the report stays readable for color-blind readers and in plain-text logs.
 
 ---
 
